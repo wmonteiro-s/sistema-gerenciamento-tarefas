@@ -38,7 +38,7 @@ async function createTask(){
         id: generateNewID(tasks),
         title: title,
         description: description,
-        completed: false
+        concluded: false
     }
     tasks.push(newTask)
     await saveTasks(tasks)
@@ -54,13 +54,25 @@ async function viewAllTasks(){
 
 await viewAllTasks()
 
-function viewConcludedTasks(){
+async function viewConcludedTasks(){
+    const tasks = await loadTasks()
 
+    const concludedTasks = tasks.filter(task => task.concluded)
+
+    concludedTasks.length ? log(concludedTasks) : log('Nenhuma tarefa foi concluída')
 }
 
-function viewNotConcludedTasks(){
+await viewConcludedTasks()
 
+async function viewNotConcludedTasks(){
+    const tasks = await loadTasks()
+
+    const inconcludedTasks = tasks.filter(tasks => !tasks.concluded)
+
+    inconcludedTasks.length ? log(inconcludedTasks) : log('Todas as tarefas foram concluídas')
 }
+
+await viewNotConcludedTasks()
 
 function completeTask(){
 

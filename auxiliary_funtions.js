@@ -45,11 +45,14 @@ async function createTask(){
     log('Tarefa criada com sucesso!')
 }
 
-await createTask()
+// await createTask()
 
-function viewAllTasks(){
-
+async function viewAllTasks(){
+    const tasks = await loadTasks()
+    log(tasks)
 }
+
+await viewAllTasks()
 
 function viewConcludedTasks(){
 

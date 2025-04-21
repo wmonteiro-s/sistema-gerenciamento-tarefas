@@ -45,6 +45,18 @@ export async function createTask(){
         tasks.push(newTask)
         await saveTasks(tasks)
         log('Tarefa criada com sucesso!')
+
+        const showNewTask = prompt('Deseja visualizar a nova tarefa criada (S/N)? ').toLowerCase()
+        if(showNewTask === 's' || showNewTask === 'sim') {
+            log(`
+================== NOVA TAREFA ==================
+ID: ${newTask.id}
+Título: ${newTask.title}
+Descrição: ${newTask.description}}
+=================================================
+`)
+        }
+        
         control = prompt('Deseja criar outra tarefa (S/N)? ').toLowerCase()
     } while (control === 's' || control === 'sim')
 }

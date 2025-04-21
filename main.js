@@ -1,4 +1,5 @@
 import promptSync from 'prompt-sync'
+import { createTask, viewAllTasks, viewConcludedTasks, viewNotConcludedTasks, concludeTask } from './auxiliary_functions.js'
 const prompt = promptSync()
 const log = console.log
 
@@ -21,14 +22,19 @@ function main(){
             const option = prompt(': ')
             switch(option){
                 case '1':
+                    createTask()
                     break
                 case '2':
+                    viewAllTasks()
                     break
                 case '3':
+                    viewConcludedTasks()
                     break
                 case '4':
+                    viewNotConcludedTasks()
                     break
                 case '5':
+                    concludeTask()
                     break
                 case '6':
                     control = false

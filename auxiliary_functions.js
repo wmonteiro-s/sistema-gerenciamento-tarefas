@@ -30,6 +30,17 @@ function generateNewID(tasks){
     return ids.length ? ++descendingIds[0] : 1
 }
 
+function formatTask(task, showStatus = true){
+    return `
+======================== TAREFA ${task.id} ========================
+ID: ${task.id}
+Título: ${task.title}
+Descrição: ${task.description}
+${showStatus ? `Status: ${task.concluded ? '[✓] CONCLUÍDA' : '[X] NÃO CONCLUÍDA'}` : ''}
+==========================================================
+`
+}
+
 export async function createTask(){
     let control
     do{
@@ -48,13 +59,7 @@ export async function createTask(){
 
         const showNewTask = prompt('Deseja visualizar a nova tarefa criada (S/N)? ').toLowerCase()
         if(showNewTask === 's' || showNewTask === 'sim') {
-            log(`
-================== NOVA TAREFA ==================
-ID: ${newTask.id}
-Título: ${newTask.title}
-Descrição: ${newTask.description}}
-=================================================
-`)
+            log(formatTask(newTask, false))
         }
         
         control = prompt('Deseja criar outra tarefa (S/N)? ').toLowerCase()
@@ -66,7 +71,7 @@ export async function viewAllTasks(){
 
     if(!tasks.length) { log('Não há nenhuma tarefa cadastrada'); return }
 
-    log(tasks)
+    tasks.forEach(task => log(formatTask(task)))
 }
 
 export async function viewConcludedTasks(){
@@ -76,7 +81,7 @@ export async function viewConcludedTasks(){
 
     const concludedTasks = tasks.filter(task => task.concluded)
 
-    concludedTasks.length ? log(concludedTasks) : log('Nenhuma tarefa foi concluída')
+    concludedTasks.length ? concludedTasks.forEach(task => log(formatTask(task))) : log('Nenhuma tarefa foi concluída')
 }
 
 export async function viewNotConcludedTasks(){
@@ -86,7 +91,7 @@ export async function viewNotConcludedTasks(){
 
     const inconcludedTasks = tasks.filter(tasks => !tasks.concluded)
 
-    inconcludedTasks.length ? log(inconcludedTasks) : log('Todas as tarefas foram concluídas')
+    inconcludedTasks.length ? inconcludedTasks.forEach(task => log(formatTask(task))) : log('Todas as tarefas foram concluídas')
 }
 
 function idExists(id, tasks){
@@ -109,7 +114,7 @@ export async function concludeTask(){
 
         const task = tasks[id - 1]
 
-        task.concluded ? log('A tarefa já está CONCLUÍDA') : (task.concluded = true, log('Tarefa marcada como CONCLUÍDA'))
+        task.concluded ? log('A tarefa já está [✓]CONCLUÍDA') : (task.concluded = true, log('Tarefa marcada como [✓]CONCLUÍDA'))
 
         await saveTasks(tasks)
 

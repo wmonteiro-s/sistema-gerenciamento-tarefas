@@ -59,27 +59,42 @@ async function viewConcludedTasks(){
 
     const concludedTasks = tasks.filter(task => task.concluded)
 
-    concludedTasks.length ? log(concludedTasks) : log('Nenhuma tarefa foi concluída')
+    tasks.length 
+    ? concludedTasks.length 
+        ? log(concludedTasks) 
+        : log('Nenhuma tarefa foi concluída') 
+    : log('Não há nenhuma tarefa cadastrada')
 }
 
-// await viewConcludedTasks()
+await viewConcludedTasks()
 
 async function viewNotConcludedTasks(){
     const tasks = await loadTasks()
 
     const inconcludedTasks = tasks.filter(tasks => !tasks.concluded)
 
-    inconcludedTasks.length ? log(inconcludedTasks) : log('Todas as tarefas foram concluídas')
+    tasks.length 
+    ? inconcludedTasks.length 
+        ? log(inconcludedTasks)
+        : log('Todas as tarefas foram concluídas')
+    : log('Não há nenhuma tarefa cadastrada')
 }
 
-// await viewNotConcludedTasks()
+await viewNotConcludedTasks()
 
 async function concludeTask(){
     const tasks = await loadTasks()
 
     const id = +prompt('Digite o ID da tarefa que deseja marcar como CONCLUÍDA: ')
-
-    tasks[`${id-1}`].concluded ? log('A tarefa já está CONCLUÍDA') : (tasks[`${id-1}`].concluded = true, log('Tarefa marcada como CONCLUÍDA'))
+    
+    tasks.length 
+    ? tasks[id - 1].concluded 
+        ? log('A tarefa já está CONCLUÍDA') 
+        : (
+            tasks[id - 1].concluded = true,
+            log('Tarefa marcada como CONCLUÍDA')
+          )
+    : log('Não há nenhuma tarefa cadastrada')
 
     await saveTasks(tasks)
 }

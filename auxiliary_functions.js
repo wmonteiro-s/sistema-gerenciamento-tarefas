@@ -31,18 +31,22 @@ function generateNewID(tasks){
 }
 
 export async function createTask(){
-    const title = prompt('Insira um título para a tarefa: ')
-    const description = prompt('Insira uma descrição para a tarefa: ')
-    const tasks = await loadTasks()
-    const newTask = {
-        id: generateNewID(tasks),
-        title: title,
-        description: description,
-        concluded: false
-    }
-    tasks.push(newTask)
-    await saveTasks(tasks)
-    log('Tarefa criada com sucesso!')
+    let control
+    do{
+        const title = prompt('Insira um título para a tarefa: ')
+        const description = prompt('Insira uma descrição para a tarefa: ')
+        const tasks = await loadTasks()
+        const newTask = {
+            id: generateNewID(tasks),
+            title: title,
+            description: description,
+            concluded: false
+        }
+        tasks.push(newTask)
+        await saveTasks(tasks)
+        log('Tarefa criada com sucesso!')
+        control = prompt('Deseja criar outra tarefa (S/N)? ').toLowerCase()
+    } while (control === 's' || control === 'sim')
 }
 
 export async function viewAllTasks(){
@@ -81,17 +85,22 @@ function idExists(id, tasks){
 }
 
 export async function concludeTask(){
-    const tasks = await loadTasks()
+    let control
+    do{
+        const tasks = await loadTasks()
 
-    if (!tasks.length) { log('Não há nenhuma tarefa registrada'); return }
+        if (!tasks.length) { log('Não há nenhuma tarefa registrada'); return }
 
-    const id = +prompt('Digite o ID da tarefa que deseja marcar como CONCLUÍDA: ')
-    
-    if (!idExists(id, tasks)) { log('O ID informado não existe'); return }
+        const id = +prompt('Digite o ID da tarefa que deseja marcar como CONCLUÍDA: ')
+        
+        if (!idExists(id, tasks)) { log('O ID informado não existe'); return }
 
-    const task = tasks[id - 1]
+        const task = tasks[id - 1]
 
-    task.concluded ? log('A tarefa já está CONCLUÍDA') : (task.concluded = true, log('Tarefa marcada como CONCLUÍDA'))
+        task.concluded ? log('A tarefa já está CONCLUÍDA') : (task.concluded = true, log('Tarefa marcada como CONCLUÍDA'))
 
-    await saveTasks(tasks)
+        await saveTasks(tasks)
+
+        control = prompt('Ainda deseja concluir alguma tarefa (S/N)? ')
+    } while (control === 's' || control === 'sim')
 }

@@ -66,7 +66,7 @@ async function viewConcludedTasks(){
     : log('Não há nenhuma tarefa cadastrada')
 }
 
-await viewConcludedTasks()
+// await viewConcludedTasks()
 
 async function viewNotConcludedTasks(){
     const tasks = await loadTasks()
@@ -80,14 +80,21 @@ async function viewNotConcludedTasks(){
     : log('Não há nenhuma tarefa cadastrada')
 }
 
-await viewNotConcludedTasks()
+// await viewNotConcludedTasks()
+
+function idExists(id, tasks){
+    const tasksId = tasks.map(task => task.id)
+    const foundId = tasksId.find(value => value === id)
+
+    return foundId
+}
 
 async function concludeTask(){
     const tasks = await loadTasks()
 
     const id = +prompt('Digite o ID da tarefa que deseja marcar como CONCLUÍDA: ')
     
-    tasks.length 
+    tasks.length && idExists(id, tasks)
     ? tasks[id - 1].concluded 
         ? log('A tarefa já está CONCLUÍDA') 
         : (

@@ -3,7 +3,7 @@ import { createTask, viewAllTasks, viewConcludedTasks, viewNotConcludedTasks, co
 const prompt = promptSync()
 const log = console.log
 
-function main(){
+async function main(){
     log('Olá, seja muito bem vindo(a) ao Gerenciador de Tarefas!\n')
     
     let control = true
@@ -22,22 +22,23 @@ function main(){
             const option = prompt(': ')
             switch(option){
                 case '1':
-                    createTask()
+                    await createTask()
                     break
                 case '2':
-                    viewAllTasks()
+                    await viewAllTasks()
                     break
                 case '3':
-                    viewConcludedTasks()
+                    await viewConcludedTasks()
                     break
                 case '4':
-                    viewNotConcludedTasks()
+                    await viewNotConcludedTasks()
                     break
                 case '5':
-                    concludeTask()
+                    await concludeTask()
                     break
                 case '6':
                     control = false
+                    log('Encerrando...')
                     break
                 default:
                     log('Opção inválida')
@@ -49,4 +50,4 @@ function main(){
     }
 }
 
-main()
+await main()

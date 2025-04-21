@@ -49,6 +49,9 @@ async function createTask(){
 
 async function viewAllTasks(){
     const tasks = await loadTasks()
+    
+    if(!tasks.length) { log('Não há nenhuma tarefa cadastrada'); return }
+
     log(tasks)
 }
 
@@ -57,13 +60,11 @@ await viewAllTasks()
 async function viewConcludedTasks(){
     const tasks = await loadTasks()
 
+    if(!tasks.length) { log('Não há nenhuma tarefa cadastrada'); return }
+
     const concludedTasks = tasks.filter(task => task.concluded)
 
-    tasks.length 
-    ? concludedTasks.length 
-        ? log(concludedTasks) 
-        : log('Nenhuma tarefa foi concluída') 
-    : log('Não há nenhuma tarefa cadastrada')
+    concludedTasks.length ? log(concludedTasks) : log('Nenhuma tarefa foi concluída')
 }
 
 // await viewConcludedTasks()
@@ -71,13 +72,11 @@ async function viewConcludedTasks(){
 async function viewNotConcludedTasks(){
     const tasks = await loadTasks()
 
+    if(!tasks.length) { log('Não há nenhuma tarefa cadastrada'); return }
+
     const inconcludedTasks = tasks.filter(tasks => !tasks.concluded)
 
-    tasks.length 
-    ? inconcludedTasks.length 
-        ? log(inconcludedTasks)
-        : log('Todas as tarefas foram concluídas')
-    : log('Não há nenhuma tarefa cadastrada')
+    inconcludedTasks.length ? log(inconcludedTasks) : log('Todas as tarefas foram concluídas')
 }
 
 // await viewNotConcludedTasks()
@@ -92,16 +91,15 @@ function idExists(id, tasks){
 async function concludeTask(){
     const tasks = await loadTasks()
 
+    if (!tasks.length) { log('Não há nenhuma tarefa registrada'); return }
+
     const id = +prompt('Digite o ID da tarefa que deseja marcar como CONCLUÍDA: ')
     
-    tasks.length && idExists(id, tasks)
-    ? tasks[id - 1].concluded 
-        ? log('A tarefa já está CONCLUÍDA') 
-        : (
-            tasks[id - 1].concluded = true,
-            log('Tarefa marcada como CONCLUÍDA')
-          )
-    : log('Não há nenhuma tarefa cadastrada')
+    if (!idExists(id, tasks)) { log('O ID informado não existe'); return }
+
+    const task = tasks[id - 1]
+
+    task.concluded ? log('A tarefa já está CONCLUÍDA') : (task.concluded = true, log('Tarefa marcada como CONCLUÍDA'))
 
     await saveTasks(tasks)
 }

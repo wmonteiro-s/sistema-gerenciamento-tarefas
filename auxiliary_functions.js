@@ -1,10 +1,12 @@
 import {readFile, writeFile} from 'fs/promises'
 import PromptSync from 'prompt-sync'
+
 const prompt = PromptSync()
 const log = console.log
 
-const FILE_NAME = 'tasks.json'
+const FILE_NAME = 'tasks.json' // Nome do arquivo onde as tarefas são salvas
 
+// Carrega as tarefas do arquivo JSON, retorna array vazio em caso de erro
 async function loadTasks() {
     try {
         const dados = await readFile(FILE_NAME, 'utf-8')
@@ -14,6 +16,7 @@ async function loadTasks() {
     }
 }
 
+// Salva o array de tarefas no arquivo JSON
 async function saveTasks(task) {
     try {
         await writeFile(FILE_NAME, JSON.stringify(task, null, 2))
@@ -22,6 +25,7 @@ async function saveTasks(task) {
     }
 }
 
+// Gera um novo ID sequencial baseado nas IDs existentes
 function generateNewID(tasks){
     const ids = tasks.map(task => task.id)
 
@@ -30,6 +34,7 @@ function generateNewID(tasks){
     return ids.length ? ++descendingIds[0] : 1
 }
 
+// Formata uma tarefa para exibição no terminal; showStatus controla exibição do status
 function formatTask(task, showStatus = true){
     return `
 ======================== TAREFA ${task.id} ========================
@@ -41,6 +46,7 @@ ${showStatus ? `Status: ${task.concluded ? '[✓] CONCLUÍDA' : '[X] NÃO CONCLU
 `
 }
 
+// Permite criar tarefas repetidamente até o usuário decidir parar
 async function createTask(){
     let control
     do{
@@ -66,6 +72,7 @@ async function createTask(){
     } while (control === 's' || control === 'sim')
 }
 
+// Exibe todas as tarefas existentes formatadas
 async function viewAllTasks(){
     const tasks = await loadTasks()
 
@@ -74,6 +81,7 @@ async function viewAllTasks(){
     tasks.forEach(task => log(formatTask(task)))
 }
 
+// Exibe apenas as tarefas concluídas
 async function viewConcludedTasks(){
     const tasks = await loadTasks()
 
@@ -84,6 +92,7 @@ async function viewConcludedTasks(){
     concludedTasks.length ? concludedTasks.forEach(task => log(formatTask(task))) : log('Nenhuma tarefa foi concluída')
 }
 
+// Exibe apenas as tarefas não concluídas
 async function viewNotConcludedTasks(){
     const tasks = await loadTasks()
 
@@ -94,6 +103,7 @@ async function viewNotConcludedTasks(){
     inconcludedTasks.length ? inconcludedTasks.forEach(task => log(formatTask(task))) : log('Todas as tarefas foram concluídas')
 }
 
+// Valida se um ID existe na lista de tarefas
 function idExists(id, tasks){
     const tasksId = tasks.map(task => task.id)
     const foundId = tasksId.find(value => value === id)
@@ -101,6 +111,7 @@ function idExists(id, tasks){
     return foundId
 }
 
+// Permite marcar uma ou várias tarefas(mas sendo uma de cada vez) como concluídas
 async function concludeTask(){
     let control
     do{
@@ -122,6 +133,7 @@ async function concludeTask(){
     } while (control === 's' || control === 'sim')
 }
 
+// Exporta as funções de escolha e exibição de menu para o módulo principal
 export async function chooseOption(option){
     switch(option){
         case '1':

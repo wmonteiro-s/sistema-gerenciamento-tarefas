@@ -121,3 +121,38 @@ export async function concludeTask(){
         control = prompt('Ainda deseja concluir alguma tarefa (S/N)? ')
     } while (control === 's' || control === 'sim')
 }
+
+export async function chooseOption(option){
+    switch(option){
+        case '1':
+            await createTask()
+            return true
+        case '2':
+            await viewAllTasks()
+            return true
+        case '3':
+            await viewConcludedTasks()
+            return true
+        case '4':
+            await viewNotConcludedTasks()
+            return true
+        case '5':
+            await concludeTask()
+            return true
+        case '6':
+            log('Encerrando...')
+            return false
+    }
+}
+
+export function showMenu(){
+    return `
+ -------------------MENU---------------------
+|1 - Criar uma nova tarefa                   |
+|2 - Visualizar todas as tarefas             |
+|3 - Visualizar apenas tarefas concluídas    |
+|4 - Visualizar apenas tarefas NÃO concluídas|
+|5 - Concluir uma tarefa                     |
+|6 - Sair                                    |
+ --------------------------------------------`
+}

@@ -41,7 +41,7 @@ ${showStatus ? `Status: ${task.concluded ? '[✓] CONCLUÍDA' : '[X] NÃO CONCLU
 `
 }
 
-export async function createTask(){
+async function createTask(){
     let control
     do{
         const title = prompt('Insira um título para a tarefa: ')
@@ -66,7 +66,7 @@ export async function createTask(){
     } while (control === 's' || control === 'sim')
 }
 
-export async function viewAllTasks(){
+async function viewAllTasks(){
     const tasks = await loadTasks()
 
     if(!tasks.length) { log('Não há nenhuma tarefa cadastrada'); return }
@@ -74,7 +74,7 @@ export async function viewAllTasks(){
     tasks.forEach(task => log(formatTask(task)))
 }
 
-export async function viewConcludedTasks(){
+async function viewConcludedTasks(){
     const tasks = await loadTasks()
 
     if(!tasks.length) { log('Não há nenhuma tarefa cadastrada'); return }
@@ -84,7 +84,7 @@ export async function viewConcludedTasks(){
     concludedTasks.length ? concludedTasks.forEach(task => log(formatTask(task))) : log('Nenhuma tarefa foi concluída')
 }
 
-export async function viewNotConcludedTasks(){
+async function viewNotConcludedTasks(){
     const tasks = await loadTasks()
 
     if(!tasks.length) { log('Não há nenhuma tarefa cadastrada'); return }
@@ -101,7 +101,7 @@ function idExists(id, tasks){
     return foundId
 }
 
-export async function concludeTask(){
+async function concludeTask(){
     let control
     do{
         const tasks = await loadTasks()
